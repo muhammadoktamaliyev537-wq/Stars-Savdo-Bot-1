@@ -8,7 +8,7 @@ import threading
 app = Flask(__name__)
 
 # Bot sozlamalari
-TOKEN = '8608266628:AAFWj6LjTVi6gFaAvEvzy7W6xLc4x8DfzC0'
+TOKEN = '8608266628:AAGfyMpC4w90S9GHnNsDpXULff20tlcLBuc'
 bot = telebot.TeleBot(TOKEN)
 
 # 🛠 TELEGRAM ID RAQAMINGIZ
@@ -24,13 +24,13 @@ def home():
 
 # Stars paketlari va narxlari (so'mda)
 STARS_PRODUCTS = {
-    "stars_50":  {"title": "50 ⭐️ Stars", "price": 13000,  "amount": 50},
-    "stars_100": {"title": "100 ⭐️ Stars", "price": 25000, "amount": 100},
-    "stars_150": {"title": "150 ⭐️ Stars", "price": 35000, "amount": 150},
-    "stars_250": {"title": "250 ⭐️ Stars", "price": 58000, "amount": 250},
-    "stars_350": {"title": "350 ⭐️ Stars", "price": 80000, "amount": 350},
-    "stars_500": {"title": "500 ⭐️ Stars", "price": 115000, "amount": 500},
-    "stars_1000": {"title": "1000 ⭐️ Stars", "price": 220000, "amount": 1000}
+    "stars_50":  {"title": "50 ⭐️ Stars", "price": 16000,  "amount": 50},
+    "stars_100": {"title": "100 ⭐️ Stars", "price": 35000, "amount": 100},
+    "stars_150": {"title": "150 ⭐️ Stars", "price": 55000, "amount": 150},
+    "stars_250": {"title": "250 ⭐️ Stars", "price": 70000, "amount": 250},
+    "stars_350": {"title": "350 ⭐️ Stars", "price": 95000, "amount": 350},
+    "stars_500": {"title": "500 ⭐️ Stars", "price": 135000, "amount": 500},
+    "stars_1000": {"title": "1000 ⭐️ Stars", "price": 240000, "amount": 1000}
 }
 
 # 🌟 PASTDAGI TUGMALAR (Klaviatura)
@@ -62,8 +62,8 @@ def start_message(message):
     USERS_DB.add(message.chat.id)
     
     welcome_text = (
-        "🌟 **Telegram Stars Savdo do'koniga xush kelibsiz!**\n\n"
-        "🤑 **Stars paketlarini Telegram'dan ancha arzon narxda oling**"
+        "🌟 Telegram Stars Savdo do'koniga xush kelibsiz!\n\n"
+        "🤑 Stars paketlarini Telegram'dan ancha arzon narxda oling"
     )
     bot.send_message(message.chat.id, welcome_text, reply_markup=get_reply_menu(), parse_mode="Markdown")
 
@@ -71,7 +71,7 @@ def start_message(message):
 @bot.message_handler(commands=['admin'])
 def admin_panel(message):
     if message.chat.id == ADMIN_ID:
-        bot.send_message(message.chat.id, "🛠 **Xush kelibsiz Admin!**\nBotni boshqarish paneli:", reply_markup=get_admin_menu(), parse_mode="Markdown")
+        bot.send_message(message.chat.id, "🛠 Xush kelibsiz Admin!\nBotni boshqarish paneli:", reply_markup=get_admin_menu(), parse_mode="Markdown")
 
 # 🌟 PASTDAGI TUGMALAR BOSILGANDA ISHLAYDIGAN QISM
 @bot.message_handler(func=lambda message: message.text in ["⭐️ STARS narxlari", "👤 Admin bilan bog'lanish", "💬 Fikrlar va sharhlar", "📢 Bizning kanal"])
@@ -83,7 +83,7 @@ def handle_reply_buttons(message):
             btn = types.InlineKeyboardButton(f"{product['title']} — {product['price']:,} so'm", callback_data=f"buy_{key}")
             buttons.append(btn)
         markup.add(*buttons)
-        bot.send_message(message.chat.id, "⭐️ **Kerakli Stars paketini tanlang:**", reply_markup=markup, parse_mode="Markdown")
+        bot.send_message(message.chat.id, "⭐️ Kerakli Stars paketini tanlang:", reply_markup=markup, parse_mode="Markdown")
         
     elif message.text == "👤 Admin bilan bog'lanish":
         bot.send_message(message.chat.id, "🎧 Savollar, takliflar yoki muammolar bo'yicha admin bilan bog'laning:\n👉 @muhammad_16")
@@ -114,11 +114,11 @@ def receive_ad_text(message):
 def handle_callbacks(call):
     if call.data == "admin_send_ads" and call.message.chat.id == ADMIN_ID:
         admin_state[call.message.chat.id] = "waiting_for_ad"
-        bot.send_message(call.message.chat.id, "📝 **Reklama xabarini yuboring (Matn, rasm yoki video):**")
+        bot.send_message(call.message.chat.id, "📝 Reklama xabarini yuboring (Matn, rasm yoki video):")
         bot.answer_callback_query(call.id)
         
     elif call.data == "admin_stats" and call.message.chat.id == ADMIN_ID:
-        stats_text = f"📊 **Bot statistikasi:**\n\n👥 Jami foydalanuvchilar: {len(USERS_DB)} ta\n🟢 Bot holati: Aktiv"
+        stats_text = f"📊 Bot statistikasi:\n\n👥 Jami foydalanuvchilar: {len(USERS_DB)} ta\n🟢 Bot holati: Aktiv"
         bot.send_message(call.message.chat.id, stats_text)
         bot.answer_callback_query(call.id)
         
@@ -129,10 +129,10 @@ def handle_callbacks(call):
         
         if product:
             payment_text = (
-                f"🛒 **Siz tanladingiz:** {product['title']}\n"
-                f"💰 **Sotib olish narxi:** {product['price']:,} so'm\n\n"
+                f"🛒 Siz tanladingiz: {product['title']}\n"
+                f"💰 Sotib olish narxi: {product['price']:,} so'm\n\n"
                 f"🛍 Ushbu paketni sotib olish uchun hozir adminimizga yozing. Admin sizga karta raqamini beradi va pul o'tishi bilan Stars'ni tashlab beradi:\n\n"
-                f"👉 **Admin bilan bog'lanish:** @muhammad_16"
+                f"👉 Admin bilan bog'lanish: @muhammad_16"
             )
             bot.send_message(call.message.chat.id, payment_text, parse_mode="Markdown")
             bot.answer_callback_query(call.id)
